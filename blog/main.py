@@ -1,8 +1,12 @@
+#from turtle import title
 from fastapi import FastAPI
+from . import schemas
+
+
 
 
 app = FastAPI()
 
 @app.post('/blog')
-def create(titel,body):
-    return {titel:'titel', body:"body"}
+def create(request: schemas.Blog):
+    return request
