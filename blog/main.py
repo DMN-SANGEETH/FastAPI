@@ -1,9 +1,9 @@
 #from turtle import title
 from fastapi import FastAPI
-from . import schemas
+from . import schemas, models
+from .database import engine
 
-
-
+models.Base.metadata.create_all(engine)
 
 app = FastAPI()
 
