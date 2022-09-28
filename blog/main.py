@@ -59,7 +59,7 @@ def update(id,request: schemas.Blog, db: Session = Depends(get_db) ):
     
     
     
-@app.get('/blog')
+@app.get('/blog',response_model=list[schemas.ShowBlog])
 def all(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
@@ -72,3 +72,13 @@ def show(id,db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"blog with the id {id} is not avilable")
         #response.status_code=status.HTTP_404_NOT_FOUND
     return blogs
+
+@app.post('/user')
+def creat_user(request: schemas.User, db: Session = Depends(get_db)):
+    new_user =models.User(name=request.name, pasword=request.pasword ,email=request.email)
+    
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    
+    return new_user 
