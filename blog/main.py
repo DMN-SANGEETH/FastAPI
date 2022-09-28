@@ -1,6 +1,7 @@
 #from turtle import title
 from email.policy import HTTP
 from http.client import ACCEPTED, NO_CONTENT, NotConnected
+from operator import concat
 from pyexpat import model
 from turtle import title
 from urllib import request, response
@@ -8,6 +9,8 @@ from fastapi import FastAPI,Depends, status, HTTPException
 from . import schemas, models
 from .database import SessionLocal, engine ,SessionLocal
 from sqlalchemy.orm import Session
+from .hashing import Hash
+
 
 import blog
 
@@ -73,9 +76,15 @@ def show(id,db: Session = Depends(get_db)):
         #response.status_code=status.HTTP_404_NOT_FOUND
     return blogs
 
+
+
+
+
+
 @app.post('/user')
 def creat_user(request: schemas.User, db: Session = Depends(get_db)):
-    new_user =models.User(name=request.name, pasword=request.pasword ,email=request.email)
+    
+    new_user =models.User(name=request.name, password=Hash.bcrypt(request.password), email=request.email)
     
     db.add(new_user)
     db.commit()
