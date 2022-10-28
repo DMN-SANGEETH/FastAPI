@@ -1,3 +1,10 @@
+<h1>This is my tested fast api code</h1>
+
+
+
+
+
+
 @app.get('/user/{id}',response_model=schemas.ShowUser)
 def get_user(id:int,db: Session = Depends(get_db)):
     users = db.query(models.User).filter(models.User.id==id).first()
